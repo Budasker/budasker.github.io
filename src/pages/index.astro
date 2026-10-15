@@ -1,43 +1,33 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+// Importamos la tarjeta
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="Budasker | Portafolio">
-  <section style="margin-top: 6rem; margin-bottom: 4rem;">
-    <!-- Saludo principal -->
+  <section style="margin-top: 6rem; margin-bottom: 5rem;">
     <h1 style="font-family: var(--font-mono); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.5rem;">
-      Hola, soy <span style="color: var(--accent);">Budasker</span>_
+      Hola, soy <span style="color: var(--accent);">Samuel</span>_
     </h1>
-    
-    <!-- Tu rol o título -->
     <h2 style="font-size: 1.5rem; color: var(--text-main); font-weight: 400; margin-bottom: 1.5rem;">
-      Estudiante de Ciberseguridad & Entusiasta de Linux y Redes
+      Estudiante de Sistemas & Entusiasta de Linux y Redes
     </h2>
-    
-    <!-- Breve biografía -->
     <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin-bottom: 2rem;">
-      Desarrollador en formación desde Sucre, Bolivia. Me apasiona la administración de sistemas en Linux, la configuración de redes y la programación en C++. Siempre busco entender cómo funciona la tecnología.
+      Desarrollador en formación desde Sucre, Bolivia. Me apasiona la administración de sistemas en Linux, la configuración de redes y la programación en C++. Siempre busco entender cómo funciona la tecnología a bajo nivel.
     </p>
-
-    <!-- Botones de acción -->
     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <a href="https://github.com/budasker" target="_blank" style="padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem;">
-        > GitHub
-      </a>
-      <a href="mailto:budask3r@gmail.com" style="padding: 0.6rem 1.2rem; background-color: var(--accent); color: var(--bg-color); border-radius: 6px; font-weight: 600; font-family: var(--font-mono); font-size: 0.9rem;">
-        > Contactar
-      </a>
+      <a href="https://github.com/budasker" target="_blank" class="btn-outline">> GitHub</a>
+      <a href="mailto:budask3r@gmail.com" class="btn-solid">> Contactar</a>
     </div>
   </section>
 
-<section id="habilidades" style="margin-bottom: 5rem;">
+  <!-- SECCIÓN HABILIDADES -->
+  <section id="habilidades" style="margin-bottom: 5rem;">
     <h2 style="font-family: var(--font-mono); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-main);">
       <span style="color: var(--accent);">~/</span>Habilidades_y_Stack
     </h2>
-
     <div class="skills-grid">
-      
-      <!-- Categoría 1 -->
       <div class="skill-category">
         <h3>🐧 Sistemas y Entornos</h3>
         <div class="badges">
@@ -46,8 +36,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="badge">Arch Linux base</span>
         </div>
       </div>
-
-      <!-- Categoría 2 -->
       <div class="skill-category">
         <h3>🌐 Redes e Infraestructura</h3>
         <div class="badges">
@@ -57,8 +45,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="badge">DNS / Ad-blocking</span>
         </div>
       </div>
-
-      <!-- Categoría 3 -->
       <div class="skill-category">
         <h3>💻 Desarrollo y Herramientas</h3>
         <div class="badges">
@@ -67,8 +53,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="badge">Geany / Editores CLI</span>
         </div>
       </div>
-
-      <!-- Categoría 4 -->
       <div class="skill-category">
         <h3>📱 Hardware y Avanzado</h3>
         <div class="badges">
@@ -77,73 +61,64 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="badge">Módulos de Kernel</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- NUEVA SECCIÓN: PROYECTOS -->
+  <section id="proyectos" style="margin-bottom: 5rem;">
+    <h2 style="font-family: var(--font-mono); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-main);">
+      <span style="color: var(--accent);">~/</span>Proyectos_Destacados
+    </h2>
+    
+    <div class="projects-grid">
+      <!-- Aquí llamamos al componente repetidas veces pasándole datos distintos -->
+      
+      <ProjectCard 
+        title="Optimización de Tráfico con OpenWrt"
+        description="Implementación de firmware OpenWrt en un enrutador Cudy AX3000 operando en modo WISP. Configuración de reglas SQM para mitigar el bufferbloat y despliegue de scripts de bloqueo de publicidad por DNS."
+        tags={['OpenWrt', 'Networking', 'Bash']}
+        repoLink="https://github.com/budasker"
+      />
+
+      <ProjectCard 
+        title="Compilación de Custom ROM Android 17"
+        description="Preparación de entorno y árbol de dispositivos para el flasheo de ROMs personalizadas (PixelOS / Evolution X) en un Redmi Note 10 Pro, manejando dependencias de kernel y recuperación."
+        tags={['Android', 'Linux', 'ADB']}
+        repoLink="https://github.com/budasker"
+      />
+
+      <ProjectCard 
+        title="Scripts de Utilidades en C++"
+        description="Colección de herramientas CLI escritas en C++ configuradas bajo entornos Linux, optimizadas para compilar con Geany y ejecutarse de manera ligera en la terminal."
+        tags={['C++', 'CLI', 'Arch Linux']}
+        repoLink="https://github.com/budasker"
+      />
 
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  /* Estilos para los botones del Hero */
-  .btn-outline {
-    padding: 0.6rem 1.2rem;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    color: var(--text-main);
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-  }
-  .btn-outline:hover {
-    border-color: var(--accent);
-  }
-  .btn-solid {
-    padding: 0.6rem 1.2rem;
-    background-color: var(--accent);
-    color: var(--bg-color);
-    border-radius: 6px;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-  }
-  .btn-solid:hover {
-    background-color: var(--accent-hover);
-    color: white;
-  }
+  /* Mismos estilos de los botones y badges de antes */
+  .btn-outline { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem; }
+  .btn-outline:hover { border-color: var(--accent); }
+  .btn-solid { padding: 0.6rem 1.2rem; background-color: var(--accent); color: var(--bg-color); border-radius: 6px; font-weight: 600; font-family: var(--font-mono); font-size: 0.9rem; }
+  .btn-solid:hover { background-color: var(--accent-hover); color: white; }
+  
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+  .skill-category h3 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 1rem; font-weight: 600; }
+  .badges { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .badge { background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-family: var(--font-mono); transition: all 0.2s ease; }
+  .badge:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-  /* Estilos para la cuadrícula de habilidades */
-  .skills-grid {
+  /* NUEVO ESTILO: Cuadrícula de proyectos */
+  .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-  }
-
-  .skill-category h3 {
-    font-size: 1.1rem;
-    color: var(--text-main);
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-
-  .badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .badge {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-family: var(--font-mono);
-    transition: all 0.2s ease;
-  }
-
-  .badge:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
+    /* Esto hace que las tarjetas se adapten solas: en PC salen 2 o 3 columnas, en móvil 1 */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
 </style>
-</BaseLayout>
+
+
+  <Footer/>
