@@ -1,0 +1,68 @@
+---
+// Obtenemos el año actual automáticamente usando JavaScript
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer-content">
+    <p class="copyright">
+      <span style="color: var(--accent);">~</span> © {year} Samuel. Construido desde Sucre, Bolivia.
+    </p>
+    
+    <div class="social-links">
+      <a href="https://github.com/budasker" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="separator">/</span>
+      <a href="mailto:budask3r@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin-top: 4rem;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .copyright {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .social-links a {
+    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .social-links a:hover {
+    color: var(--accent);
+  }
+
+  .separator {
+    color: var(--border-color);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 600px) {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

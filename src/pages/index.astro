@@ -1,124 +1,278 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// Importamos la tarjeta
 import ProjectCard from '../components/ProjectCard.astro';
-import Footer from '../components/Footer.astro';
+
+// 1. Datos estructurados de Habilidades (fácil de escalar)
+const skillCategories = [
+  {
+    title: "🐧 Sistemas y Seguridad",
+    skills: ["Linux / EndeavourOS", "Bash Scripting", "Hardening Básico", "OverTheWire / Wargames"]
+  },
+  {
+    title: "🌐 Redes e Infraestructura",
+    skills: ["OpenWrt", "SQM & QoS", "Análisis de Tráfico", "DNS / Ad-blocking"]
+  },
+  {
+    title: "💻 Desarrollo y Herramientas",
+    skills: ["C++", "Git & GitHub", "Geany / Editores CLI", "Automatización"]
+  },
+  {
+    title: "📱 Hardware y Bajo Nivel",
+    skills: ["Custom ROMs (Android)", "Flashing / ADB", "Módulos de Kernel", "CUDA / OpenCL"]
+  }
+];
+
+// 2. Datos estructurados de Proyectos
+const projects = [
+  {
+    title: "Optimización de Tráfico con OpenWrt",
+    description: "Implementación de firmware OpenWrt en un enrutador Cudy AX3000 operando en modo WISP. Configuración de reglas SQM para mitigar el bufferbloat y despliegue de bloqueo por DNS.",
+    tags: ["OpenWrt", "Networking", "Security"],
+    repoLink: "https://github.com/budasker"
+  },
+  {
+    title: "Compilación de Custom ROM Android 17",
+    description: "Preparación de entorno y árbol de dispositivos para el flasheo de ROMs personalizadas (PixelOS / Evolution X) en un Redmi Note 10 Pro, gestionando dependencias de kernel y recovery.",
+    tags: ["Android", "Linux", "ADB"],
+    repoLink: "https://github.com/budasker"
+  },
+  {
+    title: "Scripts y Utilidades CLI en C++",
+    description: "Colección de herramientas en línea de comandos escritas en C++ bajo entornos Linux, optimizadas para ejecución ligera y automatización de tareas en terminal.",
+    tags: ["C++", "CLI", "Arch Linux"],
+    repoLink: "https://github.com/budasker"
+  }
+];
 ---
 
-<BaseLayout title="Budasker | Portafolio">
-  <section style="margin-top: 6rem; margin-bottom: 5rem;">
-    <h1 style="font-family: var(--font-mono); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.5rem;">
-      Hola, soy <span style="color: var(--accent);">Samuel</span>_
+<BaseLayout title="Samuel (Budasker) | Ciberseguridad, Linux y Redes">
+  
+  <!-- SECCIÓN HERO / PRESENTACIÓN -->
+  <section class="hero">
+    <div class="status-badge">
+      <span class="status-dot"></span> Disponible para proyectos y aprendizaje
+    </div>
+
+    <h1 class="hero-title">
+      Hola, soy <span class="accent">Samuel</span>_
     </h1>
-    <h2 style="font-size: 1.5rem; color: var(--text-main); font-weight: 400; margin-bottom: 1.5rem;">
-      Estudiante de Sistemas & Entusiasta de Linux y Redes
+
+    <h2 class="hero-subtitle">
+      Estudiante de Ciberseguridad & Entusiasta de Linux y Redes
     </h2>
-    <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin-bottom: 2rem;">
-      Desarrollador en formación desde Sucre, Bolivia. Me apasiona la administración de sistemas en Linux, la configuración de redes y la programación en C++. Siempre busco entender cómo funciona la tecnología a bajo nivel.
+
+    <p class="hero-bio">
+      Desarrollador en formación desde Sucre, Bolivia. Me apasiona la administración de sistemas en Linux, la seguridad en redes y la programación en C++. Siempre busco entender y optimizar cómo funciona la tecnología a bajo nivel.
     </p>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <a href="https://github.com/budasker" target="_blank" class="btn-outline">> GitHub</a>
-      <a href="mailto:budask3r@gmail.com" class="btn-solid">> Contactar</a>
+
+    <div class="hero-actions">
+      <a href="https://github.com/budasker" target="_blank" rel="noopener noreferrer" class="btn-outline">
+        &gt; GitHub
+      </a>
+      <a href="mailto:budask3r@gmail.com" class="btn-solid">
+        &gt; Contactar
+      </a>
     </div>
   </section>
 
   <!-- SECCIÓN HABILIDADES -->
-  <section id="habilidades" style="margin-bottom: 5rem;">
-    <h2 style="font-family: var(--font-mono); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-main);">
-      <span style="color: var(--accent);">~/</span>Habilidades_y_Stack
+  <section id="habilidades" class="section">
+    <h2 class="section-title">
+      <span class="accent">~/</span>Habilidades_y_Stack
     </h2>
+
     <div class="skills-grid">
-      <div class="skill-category">
-        <h3>🐧 Sistemas y Entornos</h3>
-        <div class="badges">
-          <span class="badge">Linux / EndeavourOS</span>
-          <span class="badge">Bash y Terminal</span>
-          <span class="badge">Arch Linux base</span>
+      {skillCategories.map((category) => (
+        <div class="skill-card">
+          <h3>{category.title}</h3>
+          <div class="badges">
+            {category.skills.map((skill) => (
+              <span class="badge">{skill}</span>
+            ))}
+          </div>
         </div>
-      </div>
-      <div class="skill-category">
-        <h3>🌐 Redes e Infraestructura</h3>
-        <div class="badges">
-          <span class="badge">OpenWrt</span>
-          <span class="badge">SQM & QoS</span>
-          <span class="badge">Análisis de Tráfico</span>
-          <span class="badge">DNS / Ad-blocking</span>
-        </div>
-      </div>
-      <div class="skill-category">
-        <h3>💻 Desarrollo y Herramientas</h3>
-        <div class="badges">
-          <span class="badge">C++</span>
-          <span class="badge">Git & GitHub</span>
-          <span class="badge">Geany / Editores CLI</span>
-        </div>
-      </div>
-      <div class="skill-category">
-        <h3>📱 Hardware y Avanzado</h3>
-        <div class="badges">
-          <span class="badge">Custom ROMs (Android)</span>
-          <span class="badge">Flashing / ADB</span>
-          <span class="badge">Módulos de Kernel</span>
-        </div>
-      </div>
+      ))}
     </div>
   </section>
 
-  <!-- NUEVA SECCIÓN: PROYECTOS -->
-  <section id="proyectos" style="margin-bottom: 5rem;">
-    <h2 style="font-family: var(--font-mono); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-main);">
-      <span style="color: var(--accent);">~/</span>Proyectos_Destacados
+  <!-- SECCIÓN PROYECTOS -->
+  <section id="proyectos" class="section">
+    <h2 class="section-title">
+      <span class="accent">~/</span>Proyectos_Destacados
     </h2>
     
     <div class="projects-grid">
-      <!-- Aquí llamamos al componente repetidas veces pasándole datos distintos -->
-      
-      <ProjectCard 
-        title="Optimización de Tráfico con OpenWrt"
-        description="Implementación de firmware OpenWrt en un enrutador Cudy AX3000 operando en modo WISP. Configuración de reglas SQM para mitigar el bufferbloat y despliegue de scripts de bloqueo de publicidad por DNS."
-        tags={['OpenWrt', 'Networking', 'Bash']}
-        repoLink="https://github.com/budasker"
-      />
-
-      <ProjectCard 
-        title="Compilación de Custom ROM Android 17"
-        description="Preparación de entorno y árbol de dispositivos para el flasheo de ROMs personalizadas (PixelOS / Evolution X) en un Redmi Note 10 Pro, manejando dependencias de kernel y recuperación."
-        tags={['Android', 'Linux', 'ADB']}
-        repoLink="https://github.com/budasker"
-      />
-
-      <ProjectCard 
-        title="Scripts de Utilidades en C++"
-        description="Colección de herramientas CLI escritas en C++ configuradas bajo entornos Linux, optimizadas para compilar con Geany y ejecutarse de manera ligera en la terminal."
-        tags={['C++', 'CLI', 'Arch Linux']}
-        repoLink="https://github.com/budasker"
-      />
-
+      {projects.map((project) => (
+        <ProjectCard 
+          title={project.title}
+          description={project.description}
+          tags={project.tags}
+          repoLink={project.repoLink}
+        />
+      ))}
     </div>
   </section>
+
 </BaseLayout>
 
 <style>
-  /* Mismos estilos de los botones y badges de antes */
-  .btn-outline { padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem; }
-  .btn-outline:hover { border-color: var(--accent); }
-  .btn-solid { padding: 0.6rem 1.2rem; background-color: var(--accent); color: var(--bg-color); border-radius: 6px; font-weight: 600; font-family: var(--font-mono); font-size: 0.9rem; }
-  .btn-solid:hover { background-color: var(--accent-hover); color: white; }
-  
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-  .skill-category h3 { font-size: 1.1rem; color: var(--text-main); margin-bottom: 1rem; font-weight: 600; }
-  .badges { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .badge { background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-family: var(--font-mono); transition: all 0.2s ease; }
-  .badge:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  /* Utilidades generales */
+  .accent {
+    color: var(--accent);
+  }
 
-  /* NUEVO ESTILO: Cuadrícula de proyectos */
+  .section {
+    margin-bottom: 5.5rem;
+    scroll-margin-top: 5rem; /* Evita que el navbar fijo tape el título al navegar */
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  /* Estilos del Hero */
+  .hero {
+    margin-top: 5rem;
+    margin-bottom: 5.5rem;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: var(--text-main);
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-bio {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin-bottom: 2.2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Botones */
+  .btn-outline, .btn-solid {
+    padding: 0.65rem 1.3rem;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    background-color: transparent;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-solid {
+    background-color: var(--accent);
+    color: var(--bg-color);
+    font-weight: 600;
+    border: 1px solid var(--accent);
+  }
+
+  .btn-solid:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* Cuadrícula de Habilidades */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background-color: rgba(30, 41, 59, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .skill-card h3 {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    transition: all 0.2s ease;
+  }
+
+  .badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Cuadrícula de Proyectos */
   .projects-grid {
     display: grid;
-    /* Esto hace que las tarjetas se adapten solas: en PC salen 2 o 3 columnas, en móvil 1 */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
   }
 </style>
-
-
-  <Footer/>

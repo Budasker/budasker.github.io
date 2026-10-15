@@ -1,0 +1,96 @@
+:root {
+  /* Paleta de colores oscuros (Cybersecurity / Terminal Aesthetic) */
+  --bg-color: #0b0f19;         /* Fondo principal más profundo y elegante */
+  --bg-card: #111827;          /* Fondo para tarjetas y bloques */
+  --bg-card-hover: #1e293b;    /* Fondo al pasar el cursor */
+  --text-main: #f1f5f9;        /* Blanco suave de alto contraste */
+  --text-muted: #94a3b8;       /* Gris azulado para textos secundarios */
+  --accent: #38bdf8;           /* Azul cian brillante */
+  --accent-hover: #0ea5e9;     /* Azul intenso para interacciones */
+  --accent-glow: rgba(56, 189, 248, 0.15); /* Brillo sutil */
+  --border-color: #1e293b;     /* Bordes limpios y discretos */
+  
+  /* Tipografías */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Reset universal corregido */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Deslizamiento suave al navegar por el menú */
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-color);
+  /* Textura sutil de cuadrícula técnica + iluminación superior */
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 50%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  background-attachment: fixed;
+  
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Estilo al seleccionar texto con el cursor */
+::selection {
+  background-color: var(--accent);
+  color: var(--bg-color);
+}
+
+/* Enlaces globales */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Accesibilidad al navegar con teclado (Tab) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Contenedor principal optimizado */
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Barra de desplazamiento (Scrollbar) estilo terminal oscura */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}

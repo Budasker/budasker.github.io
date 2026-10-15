@@ -1,0 +1,85 @@
+---
+// Aquí podríamos importar otros componentes si fuera necesario, 
+// pero por ahora solo usaremos HTML y CSS.
+---
+
+<header class="navbar">
+  <div class="container nav-container">
+    <!-- El logo a la izquierda -->
+    <a href="/" class="logo">
+      Budasker<span class="cursor">_</span>
+    </a>
+
+    <!-- Los enlaces a la derecha -->
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="#habilidades">Habilidades</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Estilos encapsulados solo para el Navbar */
+  .navbar {
+    position: sticky;
+    top: 0;
+    /* Usamos el color de fondo pero con opacidad para el efecto cristal */
+    background-color: rgba(15, 23, 42, 0.85); 
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+    padding: 1rem 0;
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  /* Animación del guión bajo parpadeante */
+  .cursor {
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Ocultar texto en móviles muy pequeños para que no se amontone */
+  @media (max-width: 600px) {
+    .nav-links {
+      gap: 1rem;
+    }
+    .nav-links a {
+      font-size: 0.85rem;
+    }
+  }
+</style>
