@@ -1,16 +1,149 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Budasker | Portafolio">
+  <section style="margin-top: 6rem; margin-bottom: 4rem;">
+    <!-- Saludo principal -->
+    <h1 style="font-family: var(--font-mono); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.5rem;">
+      Hola, soy <span style="color: var(--accent);">Budasker</span>_
+    </h1>
+    
+    <!-- Tu rol o título -->
+    <h2 style="font-size: 1.5rem; color: var(--text-main); font-weight: 400; margin-bottom: 1.5rem;">
+      Estudiante de Ciberseguridad & Entusiasta de Linux y Redes
+    </h2>
+    
+    <!-- Breve biografía -->
+    <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin-bottom: 2rem;">
+      Desarrollador en formación desde Sucre, Bolivia. Me apasiona la administración de sistemas en Linux, la configuración de redes y la programación en C++. Siempre busco entender cómo funciona la tecnología.
+    </p>
+
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="https://github.com/budasker" target="_blank" style="padding: 0.6rem 1.2rem; border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem;">
+        > GitHub
+      </a>
+      <a href="mailto:budask3r@gmail.com" style="padding: 0.6rem 1.2rem; background-color: var(--accent); color: var(--bg-color); border-radius: 6px; font-weight: 600; font-family: var(--font-mono); font-size: 0.9rem;">
+        > Contactar
+      </a>
+    </div>
+  </section>
+
+<section id="habilidades" style="margin-bottom: 5rem;">
+    <h2 style="font-family: var(--font-mono); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-main);">
+      <span style="color: var(--accent);">~/</span>Habilidades_y_Stack
+    </h2>
+
+    <div class="skills-grid">
+      
+      <!-- Categoría 1 -->
+      <div class="skill-category">
+        <h3>🐧 Sistemas y Entornos</h3>
+        <div class="badges">
+          <span class="badge">Linux / EndeavourOS</span>
+          <span class="badge">Bash y Terminal</span>
+          <span class="badge">Arch Linux base</span>
+        </div>
+      </div>
+
+      <!-- Categoría 2 -->
+      <div class="skill-category">
+        <h3>🌐 Redes e Infraestructura</h3>
+        <div class="badges">
+          <span class="badge">OpenWrt</span>
+          <span class="badge">SQM & QoS</span>
+          <span class="badge">Análisis de Tráfico</span>
+          <span class="badge">DNS / Ad-blocking</span>
+        </div>
+      </div>
+
+      <!-- Categoría 3 -->
+      <div class="skill-category">
+        <h3>💻 Desarrollo y Herramientas</h3>
+        <div class="badges">
+          <span class="badge">C++</span>
+          <span class="badge">Git & GitHub</span>
+          <span class="badge">Geany / Editores CLI</span>
+        </div>
+      </div>
+
+      <!-- Categoría 4 -->
+      <div class="skill-category">
+        <h3>📱 Hardware y Avanzado</h3>
+        <div class="badges">
+          <span class="badge">Custom ROMs (Android)</span>
+          <span class="badge">Flashing / ADB</span>
+          <span class="badge">Módulos de Kernel</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Estilos para los botones del Hero */
+  .btn-outline {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .btn-outline:hover {
+    border-color: var(--accent);
+  }
+  .btn-solid {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--accent);
+    color: var(--bg-color);
+    border-radius: 6px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .btn-solid:hover {
+    background-color: var(--accent-hover);
+    color: white;
+  }
+
+  /* Estilos para la cuadrícula de habilidades */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .skill-category h3 {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .badge {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    transition: all 0.2s ease;
+  }
+
+  .badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+</style>
+</BaseLayout>
