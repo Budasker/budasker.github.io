@@ -1,21 +1,27 @@
 :root {
   /* Paleta de colores oscuros (Cybersecurity / Terminal Aesthetic) */
-  --bg-color: #0b0f19;         /* Fondo principal más profundo y elegante */
-  --bg-card: #111827;          /* Fondo para tarjetas y bloques */
-  --bg-card-hover: #1e293b;    /* Fondo al pasar el cursor */
-  --text-main: #f1f5f9;        /* Blanco suave de alto contraste */
-  --text-muted: #94a3b8;       /* Gris azulado para textos secundarios */
-  --accent: #38bdf8;           /* Azul cian brillante */
-  --accent-hover: #0ea5e9;     /* Azul intenso para interacciones */
-  --accent-glow: rgba(56, 189, 248, 0.15); /* Brillo sutil */
-  --border-color: #1e293b;     /* Bordes limpios y discretos */
+  --bg-color: #0b0f19;                     /* Fondo base profundo */
+  --bg-card: #111827;                      /* Superficie de tarjetas y bloques */
+  --bg-card-hover: #1e293b;                /* Superficie interactiva al pasar el ratón */
+  --bg-code: #070a12;                      /* Fondo ultra oscuro para terminales y código */
   
-  /* Tipografías */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --text-main: #f1f5f9;                    /* Blanco suave (evita fatiga visual) */
+  --text-muted: #94a3b8;                   /* Gris azulado para lectura prolongada */
+  
+  --accent: #38bdf8;                       /* Cian técnico principal */
+  --accent-hover: #0ea5e9;                 /* Cian intenso para hover */
+  --accent-glow: rgba(56, 189, 248, 0.14); /* Resplandor sutil */
+  --accent-soft: rgba(56, 189, 248, 0.08); /* Fondo traslúcido para citas y badges */
+  
+  --border-color: #1e293b;                 /* Bordes estructurales */
+  --border-hover: #334155;                 /* Bordes secundarios */
+  
+  /* Tipografías del sistema y técnicas */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* Reset universal corregido */
+/* 1. Reset universal moderno */
 *,
 *::before,
 *::after {
@@ -24,62 +30,172 @@
   padding: 0;
 }
 
+/* 2. Configuración raíz y soporte de Scrollbar para Firefox/Linux */
 html {
-  scroll-behavior: smooth; /* Deslizamiento suave al navegar por el menú */
+  scroll-behavior: smooth;
   color-scheme: dark;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) var(--bg-color);
 }
 
+/* Respetar preferencia si el usuario desactiva animaciones en su SO */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 3. Cuerpo principal */
 body {
   background-color: var(--bg-color);
-  /* Textura sutil de cuadrícula técnica + iluminación superior */
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Fondo técnico renderizado en capa fija independiente (0 lag al hacer scroll) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 50%),
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.09), transparent 55%),
     linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 100% 100%, 32px 32px, 32px 32px;
-  background-attachment: fixed;
-  
-  color: var(--text-main);
-  font-family: var(--font-sans);
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
-/* Estilo al seleccionar texto con el cursor */
+/* 4. Mejoras tipográficas automáticas */
+h1, h2, h3, h4 {
+  text-wrap: balance; /* Evita palabras huérfanas al final de los títulos */
+  line-height: 1.25;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none; /* Evita que símbolos de comandos Bash se deformen */
+}
+
+/* 5. Elementos multimedia responsivos por defecto */
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* 6. Estilos automáticos para Tablas y Citas en tus Writeups (.md) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.92rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+td {
+  color: var(--text-muted);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+blockquote {
+  border-left: 3px solid var(--accent);
+  background-color: var(--accent-soft);
+  padding: 0.85rem 1.2rem;
+  margin: 1.5rem 0;
+  border-radius: 0 6px 6px 0;
+  color: var(--text-main);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 2.5rem 0;
+}
+
+/* 7. Selección de texto y enlaces */
 ::selection {
   background-color: var(--accent);
   color: var(--bg-color);
 }
 
-/* Enlaces globales */
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
 a:hover {
   color: var(--accent-hover);
 }
 
-/* Accesibilidad al navegar con teclado (Tab) */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+  border-radius: 2px;
 }
 
-/* Contenedor principal optimizado */
+/* 8. Contenedor central */
 .container {
   max-width: 920px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Barra de desplazamiento (Scrollbar) estilo terminal oscura */
+/* 9. Barra de desplazamiento en navegadores Chromium / WebKit */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -87,7 +203,7 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: var(--border-hover);
   border-radius: 4px;
 }
 

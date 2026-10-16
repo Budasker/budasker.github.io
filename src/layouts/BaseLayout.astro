@@ -1,11 +1,15 @@
 ---
-// Importamos los estilos globales que acabas de crear
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 
-// Permite recibir un título dinámico desde cada página (por defecto usa "Budasker")
-const { title = "Budasker | Portafolio" } = Astro.props;
+// Importación local de fuentes vía Fontsource (cero llamadas externas)
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/700.css';
+
+const { title = "Samuel (Budasker) | Ciberseguridad, Linux y Redes" } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -16,22 +20,14 @@ const { title = "Budasker | Portafolio" } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    
-    <!-- Fuentes de Google: Inter (texto normal) y JetBrains Mono (código) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <!-- Aquí agregaremos luego el componente Navbar -->
-    <Navbar/>
+    <Navbar />
     
-    <main class="container">
-      <!-- El slot es mágico: aquí se inyectará el contenido de la página que estemos viendo -->
+    <main class="container" style="min-height: 80vh;">
       <slot /> 
     </main>
 
-    <!-- Aquí agregaremos luego el componente Footer -->
     <Footer />
   </body>
 </html>
