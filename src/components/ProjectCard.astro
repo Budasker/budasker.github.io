@@ -1,22 +1,58 @@
 ---
-// Aquí definimos las variables que recibirá la tarjeta
-const { title, description, tags, repoLink } = Astro.props;
+interface Props {
+  title: string;
+  category: string;
+  description: string;
+  metrics: string[];
+  tags: string[];
+  repoLink?: string;
+  linkText?: string;
+}
+
+const { 
+  title, 
+  category, 
+  description, 
+  metrics = [], 
+  tags = [], 
+  repoLink, 
+  linkText = ">_ Ver repositorio" 
+} = Astro.props;
 ---
 
 <article class="card">
-  <h3 class="card-title">{title}</h3>
-  <p class="card-desc">{description}</p>
-  
-  <div class="tags">
-    {tags.map((tag) => (
-      <span class="tag">{tag}</span>
-    ))}
+  <div class="card-header">
+    <span class="category">{category}</span>
   </div>
 
-  <div class="card-links">
-    <a href={repoLink} target="_blank" class="link-repo">
-      >_ Ver código
-    </a>
+  <h3 class="card-title">{title}</h3>
+  <p class="card-desc">{description}</p>
+
+  {metrics.length > 0 && (
+    <div class="metrics-box">
+      <p class="metrics-title">Especificaciones / Resultados:</p>
+      <ul class="metrics-list">
+        {metrics.map((metric) => (
+          <li>{metric}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+  
+  <div class="card-footer">
+    <div class="tags">
+      {tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
+    </div>
+
+    {repoLink && (
+      <div class="card-links">
+        <a href={repoLink} target="_blank" rel="noopener noreferrer" class="link-repo">
+          {linkText}
+        </a>
+      </div>
+    )}
   </div>
 </article>
 
@@ -28,47 +64,115 @@ const { title, description, tags, repoLink } = Astro.props;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     border-color: var(--accent);
+    box-shadow: 0 8px 24px -12px var(--accent-glow);
+  }
+
+  .card-header {
+    margin-bottom: 0.6rem;
+  }
+
+  .category {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    opacity: 0.9;
   }
 
   .card-title {
     font-family: var(--font-mono);
     font-size: 1.2rem;
     color: var(--text-main);
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
   }
 
   .card-desc {
     color: var(--text-muted);
     font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Bloque técnico de métricas */
+  .metrics-box {
+    background-color: rgba(11, 15, 25, 0.6);
+    border-left: 2px solid var(--accent);
+    padding: 0.75rem 1rem;
+    border-radius: 0 6px 6px 0;
     margin-bottom: 1.5rem;
-    flex-grow: 1; /* Empuja los enlaces hacia abajo */
+  }
+
+  .metrics-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+  }
+
+  .metrics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .metrics-list li {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .metrics-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .card-footer {
+    margin-top: auto;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.45rem;
+    margin-bottom: 1.25rem;
   }
 
   .tag {
     font-size: 0.75rem;
     font-family: var(--font-mono);
-    color: var(--accent);
-    background-color: rgba(56, 189, 248, 0.1); /* Azul muy transparente */
+    color: var(--text-main);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
   }
 
+  .card-links {
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.9rem;
+  }
+
   .link-repo {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
+    display: inline-block;
+  }
+
+  .link-repo:hover {
+    transform: translateX(3px);
   }
 </style>
