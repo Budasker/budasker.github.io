@@ -1,0 +1,162 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout title={`${frontmatter.title} | Samuel (Budasker)`}>
+  <article class="writeup">
+    <div class="writeup-nav">
+      <a href="/#writeups" class="back-link">&lt;- Volver a ~/Inicio</a>
+    </div>
+
+    <header class="writeup-header">
+      <div class="writeup-meta">
+        <span class="category">{frontmatter.category}</span>
+        <span class="separator">•</span>
+        <time>{frontmatter.date}</time>
+      </div>
+      
+      <h1 class="writeup-title">{frontmatter.title}</h1>
+      
+      <div class="tags">
+        {frontmatter.tags && frontmatter.tags.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    </header>
+
+    <div class="writeup-content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .writeup {
+    margin-top: 3.5rem;
+    margin-bottom: 5rem;
+  }
+
+  .writeup-nav {
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .writeup-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .writeup-meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .category {
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .writeup-title {
+    font-family: var(--font-mono);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--text-main);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  /* Estilos para el contenido generado desde Markdown */
+  .writeup-content :global(h2) {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 0.75rem;
+  }
+
+  .writeup-content :global(h3) {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-top: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .writeup-content :global(p) {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .writeup-content :global(ul),
+  .writeup-content :global(ol) {
+    color: var(--text-muted);
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .writeup-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .writeup-content :global(strong) {
+    color: var(--text-main);
+  }
+
+  .writeup-content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--bg-card);
+    color: var(--accent);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .writeup-content :global(pre) {
+    background-color: #070a12 !important;
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  .writeup-content :global(pre code) {
+    background-color: transparent;
+    color: var(--text-main);
+    padding: 0;
+  }
+</style>

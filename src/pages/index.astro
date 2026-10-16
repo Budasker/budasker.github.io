@@ -22,27 +22,53 @@ const skillCategories = [
   }
 ];
 
-// 2. Datos estructurados de Proyectos
+// 2. Datos estructurados de Proyectos con métricas reales
 const projects = [
   {
-    title: "Optimización de Tráfico con OpenWrt",
-    description: "Implementación de firmware OpenWrt en un enrutador Cudy AX3000 operando en modo WISP. Configuración de reglas SQM para mitigar el bufferbloat y despliegue de bloqueo por DNS.",
-    tags: ["OpenWrt", "Networking", "Security"],
-    repoLink: "https://github.com/budasker"
+    title: "Optimización de Red y Mitigación de Bufferbloat",
+    category: "Redes & Infraestructura",
+    description: "Despliegue de firmware OpenWrt en un enrutador Cudy AX3000 operando en modo WISP, enfocado en estabilidad de latencia bajo carga y filtrado de red local.",
+    metrics: [
+      "Control de tráfico SQM con algoritmo CAKE para eliminar picos de latencia",
+      "Filtrado de publicidad y rastreadores a nivel de red mediante DNS",
+      "Segmentación y ajuste de parámetros inalámbricos en entorno saturado"
+    ],
+    tags: ["OpenWrt", "SQM / QoS", "DNS Filtering", "Networking"],
+    repoLink: "https://github.com/budasker",
+    linkText: ">_ Ver perfil en GitHub"
   },
   {
-    title: "Compilación de Custom ROM Android 17",
-    description: "Preparación de entorno y árbol de dispositivos para el flasheo de ROMs personalizadas (PixelOS / Evolution X) en un Redmi Note 10 Pro, gestionando dependencias de kernel y recovery.",
-    tags: ["Android", "Linux", "ADB"],
-    repoLink: "https://github.com/budasker"
+    title: "Entorno Linux & Aceleración por Hardware",
+    category: "Sistemas & Kernel",
+    description: "Configuración y mantenimiento de estación de trabajo sobre EndeavourOS (Arch Linux), integrando módulos de kernel propietarios y herramientas de diagnóstico.",
+    metrics: [
+      "Compilación automática de módulos con DKMS para GPU NVIDIA 940MX",
+      "Integración funcional de entornos CUDA y OpenCL en Arch Linux",
+      "Flasheo y depuración de Custom ROMs (PixelOS / Evolution X) vía ADB/Fastboot"
+    ],
+    tags: ["EndeavourOS", "DKMS", "CUDA / OpenCL", "Android ROMs"],
+    repoLink: "https://github.com/budasker",
+    linkText: ">_ Ver perfil en GitHub"
   },
   {
-    title: "Scripts y Utilidades CLI en C++",
-    description: "Colección de herramientas en línea de comandos escritas en C++ bajo entornos Linux, optimizadas para ejecución ligera y automatización de tareas en terminal.",
-    tags: ["C++", "CLI", "Arch Linux"],
-    repoLink: "https://github.com/budasker"
+    title: "Herramientas CLI y Algoritmos en C++",
+    category: "Desarrollo Bajo Nivel",
+    description: "Desarrollo de utilidades en línea de comandos y resolución de problemas algorítmicos en C++, compilados y depurados de forma nativa en Linux.",
+    metrics: [
+      "Plantillas y entorno de compilación rápida con GCC/G++ y Geany",
+      "Ejecución ligera en terminal sin dependencias pesadas",
+      "Práctica continua de seguridad y lógica en laboratorios OverTheWire (Bandit)"
+    ],
+    tags: ["C++", "GCC", "Linux CLI", "Bash"],
+    repoLink: "https://github.com/budasker",
+    linkText: ">_ Ver perfil en GitHub"
   }
-];
+  ];
+// 3. Carga automática de todos los Writeups en Markdown dentro de src/pages/notas/
+const writeupFiles = import.meta.glob('./notas/*.md', { eager: true });
+const writeups = Object.values(writeupFiles).sort(
+  (a: any, b: any) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+);
 ---
 
 <BaseLayout title="Samuel (Budasker) | Ciberseguridad, Linux y Redes">
@@ -100,19 +126,45 @@ const projects = [
     <h2 class="section-title">
       <span class="accent">~/</span>Proyectos_Destacados
     </h2>
-    
-    <div class="projects-grid">
+
+<div class="projects-grid">
       {projects.map((project) => (
         <ProjectCard 
           title={project.title}
+          category={project.category}
           description={project.description}
+          metrics={project.metrics}
           tags={project.tags}
           repoLink={project.repoLink}
+          linkText={project.linkText}
         />
       ))}
     </div>
+    
   </section>
+<!-- SECCIÓN WRITEUPS / NOTAS TÉCNICAS -->
+  <section id="writeups" class="section">
+    <h2 class="section-title">
+      <span class="accent">~/</span>Notas_y_Writeups
+    </h2>
 
+    <div class="writeups-list">
+      {writeups.map((post: any) => (
+        <a href={post.url} class="writeup-item">
+          <div class="writeup-info">
+            <div class="writeup-meta">
+              <span class="writeup-cat">{post.frontmatter.category}</span>
+              <span>•</span>
+              <time>{post.frontmatter.date}</time>
+            </div>
+            <h3>{post.frontmatter.title}</h3>
+            <p>{post.frontmatter.description}</p>
+          </div>
+          <span class="read-more">&gt;_ Leer nota</span>
+        </a>
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -274,5 +326,68 @@ const projects = [
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+ /* Lista de Writeups */
+  .writeups-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
+
+  .writeup-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .writeup-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .writeup-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .writeup-cat {
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .writeup-info h3 {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+  }
+
+  .writeup-info p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .read-more {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .writeup-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  } }
 </style>
