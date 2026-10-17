@@ -1,15 +1,33 @@
 ---
-import '../styles/global.css';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
+import '@styles/global.css';
+import Navbar from '@components/Navbar.astro';
+import Footer from '@components/Footer.astro';
+import { siteConfig } from '@data/siteConfig';
 
-// Importación local de fuentes vía Fontsource (cero llamadas externas)
+// Importación local de fuentes vía Fontsource (cero peticiones externas / 100% privacidad)
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/700.css';
 
-const { title = "Samuel (Budasker) | Ciberseguridad, Linux y Redes" } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title = siteConfig.defaultTitle,
+  description = siteConfig.defaultDescription,
+  image = '/favicon.svg',
+  canonicalURL,
+  type = 'website'
+} = Astro.props;
+
+const canonical = canonicalURL || new URL(Astro.url.pathname, Astro.site || siteConfig.siteUrl).href;
+const socialImageURL = new URL(image, Astro.site || siteConfig.siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -17,9 +35,35 @@ const { title = "Samuel (Budasker) | Ciberseguridad, Linux y Redes" } = Astro.pr
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Hardening & Directivas de Seguridad del Navegador -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="theme-color" content="#0b0f19" />
+
+    <!-- SEO Primario -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={siteConfig.author} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Open Graph / Redes Sociales -->
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={`${siteConfig.author} (${siteConfig.handle})`} />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
   </head>
   <body>
     <Navbar />

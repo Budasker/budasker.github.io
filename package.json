@@ -1,9 +1,10 @@
 {
-  "name": "empty",
+  "name": "budasker-portfolio",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Portfolio técnico y writeups de Samuel (Budasker) sobre Ciberseguridad, Linux y Redes",
   "engines": {
-    "node": ">=22.22.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "astro dev",

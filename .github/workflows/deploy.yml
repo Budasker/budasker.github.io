@@ -5,10 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+# Hardening: Principio de Menor Privilegio (PoLP) a nivel global
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -42,6 +41,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    # Solo el job de despliegue recibe permisos de escritura en GitHub Pages y emisión OIDC
+    permissions:
+      pages: write
+      id-token: write
     needs: build
     runs-on: ubuntu-latest
     steps:

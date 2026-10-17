@@ -1,22 +1,21 @@
 ---
-// Aquí podríamos importar otros componentes si fuera necesario, 
-// pero por ahora solo usaremos HTML y CSS.
+import { siteConfig } from '@data/siteConfig';
 ---
 
 <header class="navbar">
   <div class="container nav-container">
     <!-- El logo a la izquierda -->
-    <a href="/" class="logo">
-      Budasker<span class="cursor">_</span>
+    <a href="/" class="logo" aria-label="Ir al inicio">
+      {siteConfig.handle}<span class="cursor">_</span>
     </a>
 
     <!-- Los enlaces a la derecha -->
-    <nav>
+    <nav aria-label="Navegación principal">
       <ul class="nav-links">
         <li><a href="/">Inicio</a></li>
-        <li><a href="#habilidades">Habilidades</a></li>
-        <li><a href="#proyectos">Proyectos</a></li>
-        <li><a href="#writeups">Writeups</a></li>
+        <li><a href="/#habilidades">Habilidades</a></li>
+        <li><a href="/#proyectos">Proyectos</a></li>
+        <li><a href="/#writeups">Writeups</a></li>
       </ul>
     </nav>
   </div>

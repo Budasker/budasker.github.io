@@ -1,18 +1,19 @@
 ---
-// Obtenemos el año actual automáticamente usando JavaScript
+import { siteConfig } from '@data/siteConfig';
+
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <div class="container footer-content">
     <p class="copyright">
-      <span style="color: var(--accent);">~</span> © {year} Samuel. Construido desde Sucre, Bolivia.
+      <span style="color: var(--accent);">~</span> © {year} {siteConfig.author}. Construido desde {siteConfig.location}.
     </p>
     
     <div class="social-links">
-      <a href="https://github.com/budasker" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
       <span class="separator">/</span>
-      <a href="mailto:budask3r@gmail.com">Email</a>
+      <a href={`mailto:${siteConfig.social.email}`}>Email</a>
     </div>
   </div>
 </footer>

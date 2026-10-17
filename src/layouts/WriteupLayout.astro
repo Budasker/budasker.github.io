@@ -1,9 +1,15 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { siteConfig } from '@data/siteConfig';
+
 const { frontmatter } = Astro.props;
 ---
 
-<BaseLayout title={`${frontmatter.title} | Samuel (Budasker)`}>
+<BaseLayout
+  title={`${frontmatter.title} | ${siteConfig.handle}`}
+  description={frontmatter.description}
+  type="article"
+>
   <article class="writeup">
     <div class="writeup-nav">
       <a href="/#writeups" class="back-link">&lt;- Volver a ~/Inicio</a>
@@ -13,16 +19,18 @@ const { frontmatter } = Astro.props;
       <div class="writeup-meta">
         <span class="category">{frontmatter.category}</span>
         <span class="separator">•</span>
-        <time>{frontmatter.date}</time>
+        <time datetime={frontmatter.date}>{frontmatter.date}</time>
       </div>
       
       <h1 class="writeup-title">{frontmatter.title}</h1>
       
-      <div class="tags">
-        {frontmatter.tags && frontmatter.tags.map((tag: string) => (
-          <span class="tag">{tag}</span>
-        ))}
-      </div>
+      {frontmatter.tags && frontmatter.tags.length > 0 && (
+        <div class="tags">
+          {frontmatter.tags.map((tag: string) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
     </header>
 
     <div class="writeup-content">
@@ -32,6 +40,33 @@ const { frontmatter } = Astro.props;
 </BaseLayout>
 
 <script>
+  async function copyToClipboard(text: string): Promise<boolean> {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        // Fallback si falla la promesa o permisos
+      }
+    }
+
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return successful;
+    } catch {
+      return false;
+    }
+  }
+
   function initCopyButtons() {
     const preBlocks = document.querySelectorAll('.writeup-content pre');
 
@@ -45,28 +80,34 @@ const { frontmatter } = Astro.props;
       pre.parentNode?.insertBefore(wrapper, pre);
       wrapper.appendChild(pre);
 
-      // Crear el botón de copiado
+      // Crear el botón de copiado accesible
       const button = document.createElement('button');
       button.className = 'copy-code-btn';
       button.type = 'button';
-      button.setAttribute('aria-label', 'Copiar código al portapapeles');
-      button.innerText = '>_ Copiar';
+      button.setAttribute('aria-label', 'Copiar fragmento de código al portapapeles');
+      button.textContent = '>_ Copiar';
 
       button.addEventListener('click', async () => {
         const codeElement = pre.querySelector('code');
-        const textToCopy = (codeElement ? codeElement.innerText : (pre as HTMLElement).innerText).trim();
+        // textContent previene reflow innecesario y respeta tabulaciones/saltos de línea exactos
+        const rawContent = (codeElement ? codeElement.textContent : pre.textContent) || '';
+        const textToCopy = rawContent.replace(/\n$/, '');
 
-        try {
-          await navigator.clipboard.writeText(textToCopy);
-          button.innerText = '✓ Copiado';
+        const success = await copyToClipboard(textToCopy);
+
+        if (success) {
+          button.textContent = '✓ Copiado';
           button.classList.add('copied');
 
           setTimeout(() => {
-            button.innerText = '>_ Copiar';
+            button.textContent = '>_ Copiar';
             button.classList.remove('copied');
           }, 2000);
-        } catch (err) {
-          button.innerText = 'Error';
+        } else {
+          button.textContent = 'Error';
+          setTimeout(() => {
+            button.textContent = '>_ Copiar';
+          }, 2000);
         }
       });
 
@@ -74,8 +115,13 @@ const { frontmatter } = Astro.props;
     });
   }
 
-  // Ejecutar al cargar la página
-  initCopyButtons();
+  // Inicialización defensiva compatible con carga estándar y ViewTransitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCopyButtons);
+  } else {
+    initCopyButtons();
+  }
+  document.addEventListener('astro:page-load', initCopyButtons);
 </script>
 
 <style>
