@@ -1,0 +1,427 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import MentorshipTrackCard from '@components/MentorshipTrackCard.astro';
+import { siteConfig } from '@data/siteConfig';
+import type { MentorshipTrack, MentorshipLesson } from '@types/portfolio';
+
+interface LessonFrontmatter {
+  title?: string;
+  category?: string;
+  description?: string;
+  date?: string;
+  tags?: string[];
+  trackTitle?: string;
+  trackDescription?: string;
+  trackIcon?: string;
+  level?: string;
+  duration?: string;
+  order?: number;
+}
+
+interface MarkdownModule {
+  url: string;
+  frontmatter: LessonFrontmatter;
+}
+
+// 1. Escaneo automático y dinámico de cualquier subcarpeta dentro de mentorias/ (CERO configuración manual)
+const rawModules = import.meta.glob<MarkdownModule>('./*/*.md', { eager: true });
+
+// Diccionario de respaldo para iconos y títulos si el frontmatter no los especifica
+const slugAliases: Record<string, { title: string; icon: string }> = {
+  cpp: { title: 'C++ & Estructuras de Datos', icon: '⚡' },
+  c: { title: 'C & Programación a Bajo Nivel', icon: '⚡' },
+  linux: { title: 'Linux, Shell & Automatización Bash', icon: '🐧' },
+  redes: { title: 'Redes, Análisis de Tráfico & Firewalls', icon: '🌐' },
+  security: { title: 'Ciberseguridad & Hardening', icon: '🛡️' },
+  kernel: { title: 'Kernel Linux & Módulos DKMS', icon: '⚙️' },
+  android: { title: 'Android Internals & ROM Flashing', icon: '📱' },
+  reversing: { title: 'Ingeniería Inversa & Análisis Estático', icon: '🔬' },
+};
+
+function humanizeSlug(slug: string): string {
+  if (slugAliases[slug.toLowerCase()]) {
+    return slugAliases[slug.toLowerCase()].title;
+  }
+  return slug
+    .split(/[-_]/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function resolveIcon(slug: string, customIcon?: string): string {
+  if (customIcon) return customIcon;
+  if (slugAliases[slug.toLowerCase()]) {
+    return slugAliases[slug.toLowerCase()].icon;
+  }
+  return '💻';
+}
+
+// 2. Agrupación dinámica por subcarpetas
+const trackGroups = new Map<string, MentorshipTrack>();
+
+for (const [filePath, module] of Object.entries(rawModules)) {
+  // filePath tiene la forma: './cpp/01-punteros-y-memoria.md'
+  const match = filePath.match(/^\.\/([^/]+)\/(.+)\.md$/);
+  if (!match) continue;
+
+  const [, folderSlug, fileName] = match;
+  const fm = module.frontmatter || {};
+
+  // Extraer el orden del prefijo numérico (ej: "01-archivo.md" -> 1) o de fm.order
+  const numMatch = fileName.match(/^(\d+)/);
+  const order = typeof fm.order === 'number' 
+    ? fm.order 
+    : (numMatch ? parseInt(numMatch[1], 10) : 999);
+
+  const cleanTitle = fm.title || fileName.replace(/^\d+[-_]?/, '').replace(/[-_]/g, ' ');
+
+  const lesson: MentorshipLesson = {
+    url: module.url,
+    title: cleanTitle,
+    description: fm.description,
+    order,
+    duration: fm.duration,
+    level: fm.level,
+    date: fm.date,
+  };
+
+  if (!trackGroups.has(folderSlug)) {
+    trackGroups.set(folderSlug, {
+      folderSlug,
+      title: fm.trackTitle || fm.category || humanizeSlug(folderSlug),
+      description: fm.trackDescription || fm.description || `Laboratorios técnicos, ejercicios prácticos y notas guiadas del módulo ${humanizeSlug(folderSlug)}.`,
+      icon: resolveIcon(folderSlug, fm.trackIcon),
+      level: fm.level || 'Práctico / Lab',
+      totalLessons: 0,
+      tags: [],
+      lessons: [],
+    });
+  }
+
+  const track = trackGroups.get(folderSlug)!;
+  track.lessons.push(lesson);
+
+  // Agregar tags únicos del frontmatter
+  if (Array.isArray(fm.tags)) {
+    for (const tag of fm.tags) {
+      if (!track.tags.includes(tag)) {
+        track.tags.push(tag);
+      }
+    }
+  }
+}
+
+// 3. Ordenar las lecciones dentro de cada track numéricamente (01, 02...)
+const tracks: MentorshipTrack[] = Array.from(trackGroups.values()).map((track) => {
+  track.lessons.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+  track.totalLessons = track.lessons.length;
+  return track;
+});
+
+// Ordenar tracks alfabéticamente por título
+tracks.sort((a, b) => a.title.localeCompare(b.title));
+
+const totalLessonsCount = tracks.reduce((acc, t) => acc + t.totalLessons, 0);
+---
+
+<BaseLayout
+  title={`Mentorías & Clases Técnicas | ${siteConfig.handle}`}
+  description="Laboratorios interactivos, clases técnicas 1 a 1 y guías prácticas en C++, Linux, Redes y Ciberseguridad impartidas por Samuel (Budasker)."
+>
+  <div class="mentorias-page">
+
+    <!-- HERO / ENCABEZADO DE TERMINAL -->
+    <header class="page-header">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>
+          {tracks.length} {tracks.length === 1 ? 'Módulo Activo' : 'Módulos Activos'} • {totalLessonsCount} {totalLessonsCount === 1 ? 'Clase Publicada' : 'Clases Publicadas'}
+        </span>
+      </div>
+
+      <h1 class="page-title">
+        <span class="accent">~/</span>Mentorias<span class="cursor">_</span>
+      </h1>
+
+      <p class="page-subtitle">
+        Programa de formación técnica sin cajas negras. Explicaciones a bajo nivel de cómo interactúan el procesador, la memoria RAM y el sistema operativo, con código fuente auditado y ejercicios prácticos de laboratorio.
+      </p>
+
+      <div class="header-actions">
+        <a href={`mailto:${siteConfig.social.email}?subject=Solicitud de Mentoría Técnica`} class="btn-solid">
+          &gt;_ Solicitar Mentoría 1 a 1
+        </a>
+        <a href="/" class="btn-outline">
+          &lt;- Volver a ~/Inicio
+        </a>
+      </div>
+    </header>
+
+    <!-- GRILLA DINÁMICA DE TRACKS -->
+    <section class="tracks-section" aria-labelledby="tracks-heading">
+      <div class="section-top">
+        <h2 id="tracks-heading" class="section-title">
+          <span class="accent">~/</span>Rutas_de_Laboratorio
+        </h2>
+        <span class="auto-scan-badge">&gt;_ dynamic_loader: active</span>
+      </div>
+
+      {tracks.length > 0 ? (
+        <div class="tracks-grid">
+          {tracks.map((track) => (
+            <MentorshipTrackCard track={track} />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="empty-title">[!] No se detectaron subcarpetas con lecciones Markdown.</p>
+          <p class="empty-hint">
+            Crea una subcarpeta en <code>src/pages/mentorias/&lt;modulo&gt;/</code> y añade tu primer archivo <code>01-leccion.md</code>.
+          </p>
+        </div>
+      )}
+    </section>
+
+    <!-- METODOLOGÍA TÉCNICA -->
+    <section class="methodology-box">
+      <h3 class="methodology-title">
+        <span class="accent">~/</span>Metodologia_de_Ensenanza
+      </h3>
+      <div class="methodology-grid">
+        <div class="method-item">
+          <div class="method-idx">[01]</div>
+          <h4>Sin Cajas Negras</h4>
+          <p>Comprende qué ocurre a nivel de CPU, memoria física, registros y llamadas al sistema antes de escribir la primera línea de código.</p>
+        </div>
+        <div class="method-item">
+          <div class="method-idx">[02]</div>
+          <h4>Entorno Nativo Linux</h4>
+          <p>Herramientas reales de ingeniería: GCC/G++, Valgrind, GDB, tcpdump y Makefiles compilados directamente en terminal.</p>
+        </div>
+        <div class="method-item">
+          <div class="method-idx">[03]</div>
+          <h4>Enfoque Defensivo</h4>
+          <p>Prevención activa de vulnerabilidades de memoria (Buffer Overflows, Dangling Pointers, Use-After-Free) desde la arquitectura.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .mentorias-page {
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+  }
+
+  .page-header {
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2.5rem;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
+  .page-title {
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    color: var(--text-main);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .cursor {
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 720px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-outline, .btn-solid {
+    padding: 0.65rem 1.3rem;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    background-color: transparent;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-solid {
+    background-color: var(--accent);
+    color: var(--bg-color);
+    font-weight: 600;
+    border: 1px solid var(--accent);
+  }
+
+  .btn-solid:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* Sección de tracks */
+  .section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .auto-scan-badge {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .accent {
+    color: var(--accent);
+  }
+
+  /* Cuadrícula de tarjetas */
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4.5rem;
+  }
+
+  .empty-state {
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    padding: 2.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .empty-title {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-hint {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .empty-hint code {
+    font-family: var(--font-mono);
+    background-color: var(--bg-code);
+    color: var(--accent);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  /* Metodología */
+  .methodology-box {
+    background-color: rgba(17, 24, 39, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2.25rem;
+  }
+
+  .methodology-title {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 1.75rem;
+  }
+
+  .methodology-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.75rem;
+  }
+
+  .method-idx {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .method-item h4 {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+  }
+
+  .method-item p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @media (max-width: 640px) {
+    .tracks-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

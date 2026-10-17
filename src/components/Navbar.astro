@@ -5,28 +5,28 @@ import { siteConfig } from '@data/siteConfig';
 <header class="navbar">
   <div class="container nav-container">
     <!-- El logo a la izquierda -->
-    <a href="/" class="logo" aria-label="Ir al inicio">
+    <a href="/" class="logo" aria-label="Ir a ~/Inicio">
       {siteConfig.handle}<span class="cursor">_</span>
     </a>
 
-    <!-- Los enlaces a la derecha -->
+    <!-- Los enlaces a la derecha con convención terminal uniforme ~/ -->
     <nav aria-label="Navegación principal">
       <ul class="nav-links">
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/#habilidades">Habilidades</a></li>
-        <li><a href="/#proyectos">Proyectos</a></li>
-        <li><a href="/#writeups">Writeups</a></li>
+        <li><a href="/">~/Inicio</a></li>
+        <li><a href="/#habilidades">~/Habilidades</a></li>
+        <li><a href="/#proyectos">~/Proyectos</a></li>
+        <li><a href="/#writeups">~/Writeups</a></li>
+        <li><a href="/mentorias/" class="mentorias-link">~/Mentorias</a></li>
       </ul>
     </nav>
   </div>
 </header>
 
 <style>
-  /* Estilos encapsulados solo para el Navbar */
+  /* Estilos encapsulados para el Navbar */
   .navbar {
     position: sticky;
     top: 0;
-    /* Usamos el color de fondo pero con opacidad para el efecto cristal */
     background-color: rgba(15, 23, 42, 0.85); 
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border-color);
@@ -47,7 +47,7 @@ import { siteConfig } from '@data/siteConfig';
     color: var(--text-main);
   }
 
-  /* Animación del guión bajo parpadeante */
+  /* Animación del cursor terminal */
   .cursor {
     color: var(--accent);
     animation: blink 1s step-end infinite;
@@ -55,31 +55,48 @@ import { siteConfig } from '@data/siteConfig';
 
   .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.35rem;
     list-style: none;
+    align-items: center;
   }
 
   .nav-links a {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--text-muted);
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
   }
 
   .nav-links a:hover {
     color: var(--accent);
   }
 
+  .mentorias-link {
+    color: var(--accent) !important;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    background-color: rgba(56, 189, 248, 0.05);
+  }
+
+  .mentorias-link:hover {
+    background-color: rgba(56, 189, 248, 0.15);
+    border-color: var(--accent);
+  }
+
   @keyframes blink {
     50% { opacity: 0; }
   }
 
-  /* Ocultar texto en móviles muy pequeños para que no se amontone */
-  @media (max-width: 600px) {
+  /* Ajuste responsivo para pantallas pequeñas */
+  @media (max-width: 680px) {
     .nav-links {
-      gap: 1rem;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     .nav-links a {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
   }
 </style>

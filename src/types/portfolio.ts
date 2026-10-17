@@ -41,3 +41,24 @@ export interface SiteConfig {
     email: string;
   };
 }
+
+export interface MentorshipLesson {
+  url: string;
+  title: string;
+  description?: string;
+  order: number;
+  duration?: string;
+  level?: string;
+  date?: string;
+}
+
+export interface MentorshipTrack {
+  folderSlug: string;
+  title: string;
+  description: string;
+  icon: string;
+  level: string;
+  totalLessons: number;
+  tags: string[];
+  lessons: MentorshipLesson[];
+}

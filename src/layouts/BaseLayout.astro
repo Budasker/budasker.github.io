@@ -68,10 +68,16 @@ const socialImageURL = new URL(image, Astro.site || siteConfig.siteUrl).href;
   <body>
     <Navbar />
     
-    <main class="container" style="min-height: 80vh;">
+    <main class="container main-content">
       <slot /> 
     </main>
 
     <Footer />
   </body>
 </html>
+
+<style>
+  .main-content {
+    min-height: calc(100vh - 180px);
+  }
+</style>

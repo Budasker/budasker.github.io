@@ -5,6 +5,8 @@ date: "2026-04-14"
 category: "Android & Modding"
 description: "Manual técnico exhaustivo sobre cómo liberar el bootloader, preparar el entorno en Linux, entender la arquitectura de particiones, flashear un Custom Recovery e instalar una Custom ROM paso a paso sin riesgos de brickeo."
 tags: ["Android", "Custom ROM", "Snapdragon", "PixelOS", "Evolution X", "LineageOS", "ADB", "Fastboot", "Linux"]
+backLink: "/#writeups"
+backText: "<- Volver a ~/Writeups"
 ---
 
 A medida que pasa el tiempo, muchos teléfonos móviles sufren una degradación artificial de rendimiento debido a las actualizaciones pesadas de las capas de personalización de fábrica (como MIUI, HyperOS, One UI o ColorOS), llenas de telemetría, publicidad y procesos en segundo plano (*bloatware*). Sin embargo, el hardware físico —especialmente en terminales con procesadores **Qualcomm Snapdragon**— suele tener potencia de sobra para seguir funcionando de manera fluida durante muchos años más.

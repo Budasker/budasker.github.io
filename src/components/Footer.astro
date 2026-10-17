@@ -7,13 +7,13 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer-content">
     <p class="copyright">
-      <span style="color: var(--accent);">~</span> © {year} {siteConfig.author}. Construido desde {siteConfig.location}.
+      <span class="accent-prompt">~</span> © {year} {siteConfig.author}. Construido desde {siteConfig.location}.
     </p>
     
     <div class="social-links">
-      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">~/GitHub</a>
       <span class="separator">/</span>
-      <a href={`mailto:${siteConfig.social.email}`}>Email</a>
+      <a href={`mailto:${siteConfig.social.email}`}>~/Email</a>
     </div>
   </div>
 </footer>
@@ -37,6 +37,10 @@ const year = new Date().getFullYear();
     font-size: 0.9rem;
     color: var(--text-muted);
     font-family: var(--font-mono);
+  }
+
+  .accent-prompt {
+    color: var(--accent);
   }
 
   .social-links {

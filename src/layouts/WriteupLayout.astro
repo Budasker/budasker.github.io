@@ -12,7 +12,9 @@ const { frontmatter } = Astro.props;
 >
   <article class="writeup">
     <div class="writeup-nav">
-      <a href="/#writeups" class="back-link">&lt;- Volver a ~/Inicio</a>
+      <a href={frontmatter.backLink || "/#writeups"} class="back-link">
+        {frontmatter.backText || "<- Volver a ~/Writeups"}
+      </a>
     </div>
 
     <header class="writeup-header">
