@@ -107,14 +107,17 @@ svg {
 
 /* 6. Estilos automáticos para Tablas y Citas en tus Writeups (.md) */
 table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin: 1.75rem 0;
   font-size: 0.92rem;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  overflow: hidden;
 }
 
 th, td {
@@ -185,11 +188,18 @@ a:hover {
   border-radius: 2px;
 }
 
-/* 8. Contenedor central */
+/* 8. Contenedor central responsivo */
 .container {
-  max-width: 920px;
+  max-width: 960px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1.15rem;
+  }
 }
 
 /* 9. Barra de desplazamiento en navegadores Chromium / WebKit */

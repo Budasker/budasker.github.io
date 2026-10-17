@@ -293,4 +293,28 @@ const { frontmatter } = Astro.props;
     border-color: #22c55e;
     background-color: rgba(34, 197, 94, 0.1);
   }
+
+  @media (max-width: 600px) {
+    .writeup {
+      margin-top: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .writeup-header {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .writeup-content :global(pre) {
+      padding: 1rem;
+      padding-top: 2.75rem;
+      padding-right: 1rem;
+      font-size: 0.82rem;
+    }
+
+    .writeup-content :global(.copy-code-btn) {
+      top: 0.5rem;
+      right: 0.5rem;
+    }
+  }
 </style>
